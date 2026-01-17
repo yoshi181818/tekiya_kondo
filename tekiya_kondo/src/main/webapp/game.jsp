@@ -1,12 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="java.util.Set, java.util.HashSet" %>
+
 <%
-    // セッションから現在のターン数を取得（GameServletでセットされている想定）
     Integer turn = (Integer) session.getAttribute("currentTurn");
-    // ゲット時のメッセージがあれば取得
-    String msg = (String) request.getAttribute("msg");
-    
-    // もしセッション切れなどでnullなら1ターン目扱い（エラー回避）
     if (turn == null) turn = 1;
+
+    Set<Integer> hitTargets = (Set<Integer>) session.getAttribute("hitTargets");
+    if (hitTargets == null) hitTargets = new HashSet<>();
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -15,7 +15,6 @@
     <title>テキーヤ近藤 - 射撃</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* このページだけの追加スタイル */
         .target-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -35,7 +34,6 @@
         .target-btn img {
             width: 100%;
             height: auto;
-            /* 的を見やすくするために少しドロップシャドウ */
             filter: drop-shadow(0 0 5px rgba(255,0,0,0.5));
         }
     </style>
@@ -48,17 +46,17 @@
 
         <form action="Game" method="post">
             <div class="target-grid">
-                <%-- 10個の的を表示 --%>
                 <% for(int i=0; i<10; i++) { %>
-                    <button type="submit" class="target-btn">
-                        <%-- target.png は webapp 直下に置いてね --%>
-                        <img src="target.png" alt="的">
-                    </button>
+                    <% if (hitTargets.contains(i)) { %>
+                        <div style="width: 100%; aspect-ratio: 1/1;"></div>
+                    <% } else { %>
+                        <button type="submit" class="target-btn" name="targetId" value="<%= i %>">
+                            <img src="target.png" alt="的">
+                        </button>
+                    <% } %>
                 <% } %>
             </div>
         </form>
     </div>
-    
-    <%-- ゲーム中は近藤さんの画像を表示しない（集中するため） --%>
 </body>
 </html>

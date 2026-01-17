@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,6 +26,7 @@ public class GameServlet extends HttpServlet {
         if (session.getAttribute("currentTurn") == null) {
             session.setAttribute("currentTurn", 1);
             session.setAttribute("currentScore", 0);
+            session.setAttribute("hitTargets", new HashSet<Integer>());
         }
         request.getRequestDispatcher("/game.jsp").forward(request, response);
     }
@@ -32,6 +35,15 @@ public class GameServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         
+        String targetIdStr = request.getParameter("targetId");
+        if (targetIdStr != null) {
+            Set<Integer> hitTargets = (Set<Integer>) session.getAttribute("hitTargets");
+            if (hitTargets == null) hitTargets = new HashSet<>();
+            
+            hitTargets.add(Integer.parseInt(targetIdStr));
+            session.setAttribute("hitTargets", hitTargets);
+        }
+
         GameLogic logic = new GameLogic();
         int point = logic.draw();
 
@@ -47,13 +59,13 @@ public class GameServlet extends HttpServlet {
             
             session.removeAttribute("currentTurn");
             session.removeAttribute("currentScore");
+            session.removeAttribute("hitTargets");
             
             response.sendRedirect("result.jsp");
         } else {
             session.setAttribute("currentScore", currentScore);
             session.setAttribute("currentTurn", currentTurn + 1);
             
-            request.setAttribute("msg", point + "点ゲット！");
             request.getRequestDispatcher("/game.jsp").forward(request, response);
         }
     }
