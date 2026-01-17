@@ -1,0 +1,110 @@
+/* ===== 共通 ===== */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* ===== 中央コンテンツ ===== */
+.center-wrapper {
+    position: relative;
+    z-index: 2;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* ===== ロゴ ===== */
+.logo {
+    width: 360px;
+    max-width: 80vw;
+    height: auto;
+    margin: 0 auto 30px auto;
+    display: block;
+}
+
+/* ===== ボタン共通 ===== */
+.button-container {
+    display: flex;
+    gap: 20px;
+}
+
+button {
+    padding: 12px 32px;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button.primary {
+    background-color: #f8d216;
+    color: #000;
+}
+
+button.secondary {
+    background-color: #fff;
+    color: #000;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+/* ===== フォーム ===== */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 260px;
+}
+
+label {
+    font-size: 14px;
+    text-align: left;
+}
+
+input {
+    padding: 10px 14px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+}
+
+/* ===== 右下画像 ===== */
+.hero-image {
+    position: fixed;
+    right: 30px;
+    bottom: 0;
+    height: 75vh;
+    max-height: 900px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ===== レスポンシブ ===== */
+@media screen and (max-width: 768px) {
+    .hero-image {
+        height: 45vh;
+        right: 10px;
+    }
+
+    .logo {
+        width: 260px;
+    }
+
+    .button-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
